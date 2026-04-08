@@ -166,6 +166,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white;
 }
 
+/* PART 1 */
 #video-background {
   position: fixed;
   top: 0;
@@ -175,3 +176,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   object-fit: cover;
   z-index: -1;
 }
+/* PART 1 */

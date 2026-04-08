@@ -1,3 +1,4 @@
+// PART 2
 const API_KEY = "Yv4IhJaPNvg27tUPtMLUZyRgnF1JF0E0TdvJlGKG";
 
 function initializeDatepicker() {
@@ -22,6 +23,7 @@ function formatDate(date) {
   const dd = date.getDate().toString().padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 }
+// PART 2
 
 async function fetchAPODData(date) {
   try {
