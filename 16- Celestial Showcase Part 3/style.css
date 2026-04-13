@@ -1,0 +1,59 @@
+/* PART 3 */
+button,
+.btn {
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.input-group.date {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10.2px);
+  -webkit-backdrop-filter: blur(10.2px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+/* PART 3 */
+
+/* PART 2 */
+/* Base styling */
+html {
+  font-size: 16px;
+}
+
+/* Glass-effect navbar */
+.navbar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Center the brand */
+.navbar-brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+/* PART 2 */
+
+/* PART 1 */
+#video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+/* PART 1 */
