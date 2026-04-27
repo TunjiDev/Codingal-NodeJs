@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- your form + results -->
+      <form action="/getweather" method="POST">
+        Location
+        <input type="text" name="city" /><br />
+        <button type="submit">Submit</button>
+      </form>
+
+      {% if data and data.country_code and data.temp %}
+      <h1>{{ data.location }}</h1>
+      <p>The country code is {{ data.country_code }}</p>
+      <p>The temperature is {{ data.temp }}</p>
+      {% else %}
+      <p>{{ error }}</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
