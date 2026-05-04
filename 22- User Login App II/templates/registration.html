@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="word">Register</h1>
+      </header>
+
+      <main class="border">
+        <form action="/register" method="POST">
+          <div class="msg">{{msg}}</div>
+
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" placeholder="Enter your username" class="textbox" required />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter your Password" class="textbox" required />
+          </div>
+
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Enter your Email" class="textbox" required />
+          </div>
+
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+
+        <p class="bottom">Already have account? <a class="bottom" href="/login"> Sign In here </a></p>
+      </main>
+    </div>
+  </body>
+</html>
