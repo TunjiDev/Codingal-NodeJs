@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="word">Welcome</h1>
+      </header>
+
+      <main class="border">
+        <section class="content">
+          <h2 class="bottom">Hi {{name}}!!</h2>
+
+          {% if msg %}
+          <p class="msg-text">{{msg}} !!</p>
+          {% endif %}
+
+          <p>You are Welcome</p>
+          <p>Happy to have you here...</p>
+        </section>
+
+        <a href="/logout" class="btn">Log Out</a>
+      </main>
+    </div>
+  </body>
+</html>
