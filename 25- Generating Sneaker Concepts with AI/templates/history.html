@@ -1,6 +1,11 @@
-{% extends "base.html" %} {% block title %}Design History — SOLE/AI{% endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block title %}Design History — SOLE/AI{% endblock %}
+
+{% block content %}
 
 <section class="history-page">
+
   <div class="history-header">
     <div>
       <h1 class="page-title">Design History</h1>
@@ -8,7 +13,9 @@
     </div>
     {% if designs %}
     <form method="POST" action="{{ url_for('clear_history') }}" class="clear-form">
-      <button type="submit" class="btn-clear" onclick="return confirm('Clear all design history?');">Clear All ✕</button>
+      <button type="submit" class="btn-clear" onclick="return confirm('Clear all design history?')">
+        Clear All ✕
+      </button>
     </form>
     {% endif %}
   </div>
@@ -26,24 +33,24 @@
   <div class="history-grid">
     {% for entry in designs %}
     <article class="history-card">
+
       <!-- Sneaker preview: AI image if available, else SVG colorway -->
-      <div
-        class="card-visual"
-        style="
+      <div class="card-visual" style="
         --upper-color: {{ entry.concept.colorways[0].upper if entry.concept.colorways else '#00C3FF' }};
         --panel-color: {{ entry.concept.colorways[0].sole  if entry.concept.colorways else '#0096DC' }};
         --toe-color:   {{ entry.concept.colorways[0].upper if entry.concept.colorways else '#00AAF0' }};
         --accent-color:{{ entry.concept.colorways[0].accent if entry.concept.colorways else '#EBC9A0' }};
         --lace-color:  {{ entry.concept.colorways[0].lace  if entry.concept.colorways else '#FAEBC8' }};
         --midsole-color:{{ entry.concept.colorways[0].tongue if entry.concept.colorways else '#FAEBC8' }};
-      "
-      >
+      ">
         {% if entry.image_url %}
-        <div class="card-ai-img-wrap">
-          <img src="{{ entry.image_url }}" alt="{{ entry.concept.name }}" class="card-ai-img" loading="lazy" />
-          <span class="card-ai-badge">AI</span>
-        </div>
-        {% else %} {% include "sneaker_svg.html" %} {% endif %}
+          <div class="card-ai-img-wrap">
+            <img src="{{ entry.image_url }}" alt="{{ entry.concept.name }}" class="card-ai-img" loading="lazy" />
+            <span class="card-ai-badge">AI</span>
+          </div>
+        {% else %}
+          {% include "sneaker_svg.html" %}
+        {% endif %}
       </div>
 
       <!-- Card info -->
@@ -69,7 +76,7 @@
           <div class="swatch-group" title="{{ cw.name }}">
             <div class="swatch" style="background:{{ cw.upper }}"></div>
             <div class="swatch" style="background:{{ cw.accent }}"></div>
-            <div class="swatch" style="background: {{ cw.sole }}"></div>
+            <div class="swatch" style="background:{{ cw.sole }}"></div>
           </div>
           {% endfor %}
         </div>
@@ -81,10 +88,12 @@
           <span class="pref-pill">{{ entry.prefs.occasion }}</span>
         </div>
       </div>
+
     </article>
     {% endfor %}
   </div>
   {% endif %}
+
 </section>
 
 {% endblock %}
