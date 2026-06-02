@@ -1,9 +1,9 @@
-﻿"""Lesson 2 — Generating Sneaker Concepts with AI
-Goal: Connect Groq LLaMA 3. /generate returns a concept JSON.
-No captcha yet — click Generate and see the concept appear.
+﻿"""Lesson 3 — Adding Verification to the AI Generation Flow
+Goal: Add hCaptcha server-side verification to /generate.
+The captcha modal pops up before generation starts.
 Run: python app.py  →  visit http://localhost:5000
 """
-import os, json
+import os, json, requests
 from flask import Flask, render_template, request, jsonify
 from groq import Groq
 from dotenv import load_dotenv
@@ -12,20 +12,18 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = "sneaker-studio-dev-key"
 
-GROQ_API_KEY      = os.environ.get("GROQ_API_KEY", "")
-HCAPTCHA_SITE_KEY = os.environ.get("HCAPTCHA_SITE_KEY", "")
-groq_client       = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+GROQ_API_KEY        = os.environ.get("GROQ_API_KEY", "")
+HCAPTCHA_SITE_KEY   = os.environ.get("HCAPTCHA_SITE_KEY", "10000000-ffff-ffff-ffff-000000000001")
+HCAPTCHA_SECRET     = os.environ.get("HCAPTCHA_SECRET",   "0x0000000000000000000000000000000000000000")
+HCAPTCHA_VERIFY_URL = "https://api.hcaptcha.com/siteverify"
+groq_client         = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 DESIGN_PROMPT = """You are an expert sneaker designer. Generate a detailed concept based on:
 Style: {style}, Primary Color: {primary_color}, Accent Color: {accent_color},
 Material: {material}, Occasion: {occasion}, Inspiration: {inspiration}
 
 Respond with raw JSON only — no markdown, no explanation.
-{{"name":"2-4 word creative name","tagline":"punchy tagline max 10 words","description":"2-3 sentence design 
-description","materials":["mat1","mat2","mat3"],"colorways":
-[{{"name":"colorway name","sole":"#hex","upper":"#hex","accent":"#hex","lace":"#hex","tongue":"#hex"}}],
-"features":["feat1","feat2","feat3","feat4"],"sole_type":"sole tech description",
-"target_audience":"who this is for","retail_price":"$XXX","style_tags":["tag1","tag2","tag3"]}}
+{{"name":"2-4 word creative name","tagline":"punchy tagline max 10 words","description":"2-3 sentence design description","materials":["mat1","mat2","mat3"],"colorways":[{{"name":"colorway name","sole":"#hex","upper":"#hex","accent":"#hex","lace":"#hex","tongue":"#hex"}}],"features":["feat1","feat2","feat3","feat4"],"sole_type":"sole tech description","target_audience":"who this is for","retail_price":"$XXX","style_tags":["tag1","tag2","tag3"]}}
 Generate exactly 3 colorways: user colors first, then 2 creative variations. All hex codes must be valid #RRGGBB."""
 
 
@@ -33,6 +31,15 @@ def get_prefs(data):
     fields = [("style","casual"),("primary_color","white"),("accent_color","black"),
               ("material","leather"),("occasion","everyday"),("inspiration","")]
     return {k: data.get(k, d) for k, d in fields}
+
+
+def verify_hcaptcha(token):
+    try:
+        r = requests.post(HCAPTCHA_VERIFY_URL,
+                          data={"secret": HCAPTCHA_SECRET, "response": token}, timeout=5)
+        return r.json().get("success", False)
+    except Exception:
+        return False
 
 
 def generate_concept(prefs):
@@ -71,6 +78,11 @@ def history():
 @app.route("/generate", methods=["POST"])
 def generate():
     data  = request.get_json(silent=True) or request.form
+    token = data.get("h-captcha-response", "")
+    if not token:
+        return jsonify({"error": "Please complete the CAPTCHA."}), 400
+    if not verify_hcaptcha(token):
+        return jsonify({"error": "CAPTCHA verification failed."}), 400
     prefs = get_prefs(data)
     try:
         concept = generate_concept(prefs)
